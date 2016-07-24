@@ -35,13 +35,16 @@ namespace SkyNet.Core
 
         public Guid Id { get { return _id; } }
 
+        public Uri ListenAddress { get; private set; }
+
         #endregion
 
         #region Methods
 
         private void InitializeService()
         {
-            _controlerService = new ServiceHost(new CoreControllerService(this), Addresses.CorePipeBase);
+            ListenAddress = new Uri(string.Format("{0}AgentCore_{1}", Addresses.CorePipeBase,Id.ToString("N")));
+            _controlerService = new ServiceHost(new CoreControllerService(this), ListenAddress);
             _controlerService.AddServiceEndpoint(typeof(ICoreControllerService), new NetNamedPipeBinding(),
                 Addresses.CorePipeAddress(Id));
             _controlerService.Open();
