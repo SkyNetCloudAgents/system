@@ -29,7 +29,7 @@ namespace SkyNet.Log
                 if (!_initialized)
                 {
                     _initialized = true;
-                    string name = string.Format("(Emergency Error) {0}", Guid.NewGuid().ToString("N"));
+                    string name = string.Format("(Emergency) {0}", Guid.NewGuid().ToString("N"));
                     _auditTrail = Initializer.CreateAuditTrail(name);
                     _console = Initializer.CreateConsole(name);
                 }
@@ -47,12 +47,20 @@ namespace SkyNet.Log
             }
         }
 
-        public static void Log(string error)
+        public static void LogError(string error)
         {
             Initialize();
             Safe(() => _auditTrail.Error(error));
             Safe(() => _console.Error(error));
         }
+
+        public static void LogInfo(string info)
+        {
+            Initialize();
+            Safe(() => _auditTrail.Info(info));
+            Safe(() => _console.Info(info));
+        }
+
 
         #endregion
     }

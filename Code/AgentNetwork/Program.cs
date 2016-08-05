@@ -14,14 +14,15 @@ namespace AgentNetwork
     {
         static void Main(string[] args)
         {
-            using (CoreControler controler = CoreFactory.Create())
-            using (CoreControler controler2 = CoreFactory.Create())
+            var list = new List<CoreControler>();
+            for (int i = 0; i < 1; i++)
             {
-                controler.Initialize(new CoreConfiguration() { Name = "Test Core" });
-                controler.Initialize(new CoreConfiguration() { Name = "Test Core2" });
-                Console.WriteLine(controler.ToString());
-                Console.WriteLine(controler2.ToString());
+                var controler = CoreFactory.Create();
+                controler.Initialize(new CoreConfiguration() { Name = "Test Core " + i });
+                list.Add(controler);
             }
+            list.ForEach(i => Console.WriteLine(i));
+            list.ForEach(i => i.Dispose());
             Console.WriteLine("END");
             Console.ReadLine();
         }

@@ -24,6 +24,7 @@ namespace SkyNet.Manager.Contracts
         {
             _portStart = 10000;
             _portEnd = 20000;
+            LoggingType = LoggingType.Console;
         }
 
         #endregion

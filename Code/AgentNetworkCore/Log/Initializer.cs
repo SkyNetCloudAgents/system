@@ -33,6 +33,7 @@ namespace SkyNet.Log
             pl.ActivateOptions();
             fileAppender.Layout = pl;
             fileAppender.ActivateOptions();
+            LogManager.ResetConfiguration();
             log4net.Config.BasicConfigurator.Configure(fileAppender);
             return LogManager.GetLogger(loggerName ?? caller);
         }
@@ -52,6 +53,7 @@ namespace SkyNet.Log
             pl.ActivateOptions();
             eventLogAppender.Layout = pl;
             eventLogAppender.ActivateOptions();
+            LogManager.ResetConfiguration();
             log4net.Config.BasicConfigurator.Configure(eventLogAppender);
             return LogManager.GetLogger(loggerName ?? caller);
         }
@@ -67,6 +69,7 @@ namespace SkyNet.Log
             pl.ActivateOptions();
             consoleAppender.Layout = pl;
             consoleAppender.ActivateOptions();
+            LogManager.ResetConfiguration();
             log4net.Config.BasicConfigurator.Configure(consoleAppender);
             return LogManager.GetLogger(loggerName ?? caller);
         }
@@ -84,6 +87,7 @@ namespace SkyNet.Log
 
         public static ILog CreateCustom(string xml, string loggerName = null, [CallerMemberName] string caller = null)
         {
+            LogManager.ResetConfiguration();
             using (var stream = GenerateStreamFromString(xml))
             {
                 log4net.Config.XmlConfigurator.Configure(stream);

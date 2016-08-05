@@ -17,6 +17,10 @@ namespace SkyNet.Manager
 
         private readonly ICoreControllerService _service;
 
+        private readonly InstanceContext _instanceContext;
+
+        private readonly DuplexChannelFactory<ICoreControllerService> _factory;
+
         private bool _initialized = false;
 
         #endregion
@@ -26,10 +30,10 @@ namespace SkyNet.Manager
         internal CoreControler(Guid coreId)
         {
             _coreId = coreId;
-            var instanceContext = new InstanceContext(new CoreControllerCallbackService(this));
-            var factory = new DuplexChannelFactory<ICoreControllerService>(instanceContext,
+            _instanceContext = new InstanceContext(new CoreControllerCallbackService(this));
+            _factory = new DuplexChannelFactory<ICoreControllerService>(_instanceContext,
                 new NetNamedPipeBinding(), Addresses.CorePipeAddress(CoreId).ToString());
-            _service = factory.CreateChannel();
+            _service = _factory.CreateChannel();
         }
 
         #endregion
@@ -50,7 +54,11 @@ namespace SkyNet.Manager
 
         public void Initialize(CoreConfiguration configuration)
         {
-            if(!_initialized)
+            if (_initialized)
+            {
+                throw new Exception("Already initialized");
+            }
+            else
             {
                 _service.Initialize(configuration);
                 _initialized = true;

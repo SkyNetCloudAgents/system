@@ -12,11 +12,13 @@ using System.Threading.Tasks;
 
 namespace SkyNet.Core
 {
+    using log4net;
+
     public static class CoreFactory
     {
         #region Fields
 
-        private static ConcurrentDictionary<Guid, Tuple<AppDomain, CoreInitializer>> _cores = new ConcurrentDictionary<Guid, Tuple<AppDomain, CoreInitializer>>();
+        private static ConcurrentDictionary<Guid, CoreFactoryItem> _cores = new ConcurrentDictionary<Guid, CoreFactoryItem>();
 
         #endregion
 
@@ -35,7 +37,7 @@ namespace SkyNet.Core
                 AppDomain.Unload(domain);
                 throw new Exception("Error in CoreInitializer");
             }
-            _cores.AddOrUpdate(coreId, new Tuple<AppDomain, CoreInitializer>(domain, initializer),
+            _cores.AddOrUpdate(coreId, new CoreFactoryItem(domain, initializer, null),
                 (id, tuple) => tuple);
 
             CoreControler remoteControl = new CoreControler(coreId);
@@ -45,12 +47,12 @@ namespace SkyNet.Core
 
         public static void Destroy(CoreControler remoteControl)
         {
-            Tuple<AppDomain, CoreInitializer> item = null;
+            CoreFactoryItem item = null;
 
             if (_cores.TryGetValue(remoteControl.CoreId, out item))
             {
-                item.Item2.Destroy();
-                AppDomain.Unload(item.Item1);
+                item.Initializer.Destroy();
+                AppDomain.Unload(item.Domain);
                 _cores.TryRemove(remoteControl.CoreId, out item);
             }
         }

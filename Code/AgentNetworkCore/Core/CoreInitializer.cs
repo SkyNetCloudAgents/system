@@ -27,7 +27,7 @@ namespace SkyNet.Core
             }
             catch (Exception exception)
             {
-                Emergency.Log(exception.ToString());
+                Emergency.LogError(exception.ToString());
             }
         }
 

@@ -42,10 +42,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +51,7 @@
     <Compile Include="Core\Core.cs" />
     <Compile Include="Core\Core.DependencyInjection.cs" />
     <Compile Include="Core\CoreFactory.cs" />
+    <Compile Include="Core\CoreFactoryItem.cs" />
     <Compile Include="Core\CoreInitializer.cs" />
     <Compile Include="Global\Addresses.cs" />
     <Compile Include="Global\IIdentification.cs" />

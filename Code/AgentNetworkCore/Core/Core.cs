@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace SkyNet.Core
 {
+    using log4net;
+
+    using SkyNet.Log;
+
     internal sealed partial class Core : IIdentification, IDisposable
     {
         #region Fields
@@ -25,7 +29,7 @@ namespace SkyNet.Core
 
         internal Core()
         {
-            Console.WriteLine("Core created in " + ToString());
+            Emergency.LogInfo("Core created in " + ToString());
             InitializeService();
         }
 
@@ -52,10 +56,10 @@ namespace SkyNet.Core
 
         internal void Initialize(CoreConfiguration configuration)
         {
+            this.InitializeDependencyInjection(configuration);
             _callbackService = OperationContext.Current.GetCallbackChannel<ICoreControllerCallbackService>();
             _callbackService.Log("Recieved data");
-            Console.WriteLine(configuration.Name);
-            this.InitializeDependencyInjection(configuration);
+            Container.GetInstance<ILog>().Info(configuration.Name);
         }
 
         public void Dispose()
@@ -64,9 +68,12 @@ namespace SkyNet.Core
             {
                 _controlerService.Close();
             }
-            catch { }
-            _controlerService = null;
-            Console.WriteLine("Core destroyed in " + ToString());
+            finally
+            {
+                _controlerService = null;
+            }
+            _callbackService = null;
+            Container.GetInstance<ILog>().InfoFormat("Core destroyed in {0}", ToString());
         }
 
         public override string ToString()

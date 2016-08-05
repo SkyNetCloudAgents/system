@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace SkyNet.Manager.Contracts
 {
+    using log4net;
+
     class CoreControllerCallbackService : ICoreControllerCallbackService
     {
         #region Fields
