@@ -30,6 +30,11 @@ namespace SkyNet.Core
             CoreInitializer initializer = (CoreInitializer)domain.CreateInstanceFromAndUnwrap(
                 typeof(CoreInitializer).Assembly.Location, typeof(CoreInitializer).FullName);
             Guid coreId = initializer.Id;
+            if (coreId == Guid.Empty)
+            {
+                AppDomain.Unload(domain);
+                throw new Exception("Error in CoreInitializer");
+            }
             _cores.AddOrUpdate(coreId, new Tuple<AppDomain, CoreInitializer>(domain, initializer),
                 (id, tuple) => tuple);
 

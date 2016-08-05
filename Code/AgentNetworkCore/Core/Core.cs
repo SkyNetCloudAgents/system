@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SkyNet.Core
 {
-    internal sealed class Core : IIdentification, IDisposable
+    internal sealed partial class Core : IIdentification, IDisposable
     {
         #region Fields
 
@@ -55,6 +55,7 @@ namespace SkyNet.Core
             _callbackService = OperationContext.Current.GetCallbackChannel<ICoreControllerCallbackService>();
             _callbackService.Log("Recieved data");
             Console.WriteLine(configuration.Name);
+            this.InitializeDependencyInjection(configuration);
         }
 
         public void Dispose()

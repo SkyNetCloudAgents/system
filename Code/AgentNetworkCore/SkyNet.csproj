@@ -31,6 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector, Version=3.2.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.3.2.0\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -45,10 +52,13 @@
     <Compile Include="Agent\Agent.cs" />
     <Compile Include="AppDomains\AppDomainFactory.cs" />
     <Compile Include="Core\Core.cs" />
+    <Compile Include="Core\Core.DependencyInjection.cs" />
     <Compile Include="Core\CoreFactory.cs" />
     <Compile Include="Core\CoreInitializer.cs" />
     <Compile Include="Global\Addresses.cs" />
     <Compile Include="Global\IIdentification.cs" />
+    <Compile Include="Log\Emergency.cs" />
+    <Compile Include="Log\Initializer.cs" />
     <Compile Include="Manager\Contracts\CoreConfiguration.cs" />
     <Compile Include="Manager\Contracts\CoreControllerCallbackService.cs" />
     <Compile Include="Manager\Contracts\CoreControllerService.cs" />
@@ -57,7 +67,9 @@
     <Compile Include="Manager\CoreControler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

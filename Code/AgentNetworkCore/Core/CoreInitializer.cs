@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace SkyNet.Core
 {
+    using SkyNet.Log;
+
     internal class CoreInitializer : MarshalByRefObject
     {
         #region Fields
@@ -19,14 +21,21 @@ namespace SkyNet.Core
 
         public CoreInitializer()
         {
-            _core = new Core();
+            try
+            {
+                _core = new Core();
+            }
+            catch (Exception exception)
+            {
+                Emergency.Log(exception.ToString());
+            }
         }
 
         #endregion
 
         #region Properties
 
-        public Guid Id { get { return _core.Id; } }
+        public Guid Id { get { return _core == null ? Guid.Empty : _core.Id; } }
 
         #endregion
 
@@ -34,8 +43,11 @@ namespace SkyNet.Core
 
         internal void Destroy()
         {
-            _core.Dispose();
-            _core = null;
+            if (_core != null)
+            {
+                _core.Dispose();
+                _core = null;
+            }
         }
 
         #endregion
